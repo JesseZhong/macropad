@@ -7,6 +7,7 @@ from adafruit_macropad import MacroPad
 from adafruit_hid.keycode import Keycode
 from adafruit_hid.consumer_control_code import ConsumerControlCode
 from adafruit_hid.mouse import Mouse
+from json import load
 
 
 class Macro:
@@ -61,3 +62,54 @@ class Macro:
 
             if hasattr(self, 'display_message'):
                 self.display_message(None)
+
+
+class Macros:
+    """
+        Loads, stores, and executes user-defined macros.
+    """
+
+    def __init__(
+        self,
+        config_file: str,
+        macropad: MacroPad
+    ):
+        """
+            Loads all of the user macros from the file.
+
+            Parameters
+            ----------
+            config_file : str
+                Name of the config file that contains all the macros.
+            macropad : MacroPad
+                Macro pad object used to handle user inputs and execute macros.
+        """
+
+        # Import macros.
+        self.macros: Dict[str, Macro] = {}
+
+        with open(
+            config_file,
+            'rt',
+            encoding='UTF-8'
+        ) as file:
+            data: Dict = load(file)
+
+            if data:
+                for macro_key, macro_config in data.items():
+                    self.macros[macro_key] = Macro(
+                        macropad,
+                        macro_config
+                    )
+
+
+    def execute(
+        self,
+        key: str
+    ):
+        """
+            Check if a key has a defined macro for it.
+            Execute the macro if it does.
+        """
+        if key in self.macros:
+            self.macros[key].send()
