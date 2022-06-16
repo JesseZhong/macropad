@@ -1,0 +1,41 @@
+{
+    "0": {
+        "key": "MUTE",
+        "message": "🕨 Mute"
+    },
+
+    "1": {
+        "key": "PLAY_PAUSE",
+        "message": "⏯ Play/Pause"
+    },
+
+    "2": {
+        "key": "BRIGHTNESS_INCREMENT",
+        "message": "🔆 Increase Brightness"
+    },
+
+    "3": {
+        "key": "SCAN_PREVIOUS_TRACK",
+        "message": "⏮ Previous"
+    },
+
+    "4": {
+        "key": "SCAN_NEXT_TRACK",
+        "message": "⏭ Next"
+    },
+
+    "5": {
+        "key": "BRIGHTNESS_DECREMENT",
+        "message": "🔅 Decrease Brightness"
+    },
+
+    "+": {
+        "key": "VOLUME_INCREMENT",
+        "message": "🕪 Volume Up"
+    },
+
+    "-": {
+        "key": "VOLUME_DECREMENT",
+        "message": "🕩 Volume Down"
+    }
+}
