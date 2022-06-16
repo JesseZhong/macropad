@@ -4,6 +4,7 @@ except ImportError:
     pass
 
 from adafruit_macropad import MacroPad
+from traceback import print_exception
 from time import sleep
 from json import load
 from macro import Macro
@@ -56,7 +57,10 @@ while True:
         if code != None:
             
             if event.pressed:
-                handle(str(code))
+                try:
+                    handle(str(code))
+                except Exception as e:
+                    print_exception(e, e, e.__traceback__)
 
     # Track any change in the rotary encoder.
     rotary_current = macropad.encoder
@@ -66,9 +70,9 @@ while True:
     if rotary_previous != rotary_current:
 
         if (rotary_previous - rotary_current) > 0:
-            handle('+')
-        else:
             handle('-')
+        else:
+            handle('+')
 
     rotary_previous = rotary_current
         

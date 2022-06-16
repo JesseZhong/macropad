@@ -43,7 +43,7 @@ class Macro:
         """
         
         if hasattr(self, 'handle'):
-            self.handle()
+            self.handle(None)
 
             if hasattr(self, 'display_message'):
-                self.display_message()
+                self.display_message(None)
