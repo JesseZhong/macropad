@@ -20,16 +20,30 @@ class Macro:
         key = macro['key'] if 'key' in macro else None
         if not key:
             return
+
+        # Localize any key modifiers and get their key codes.
+        mods = [Keycode.__dict__[k] for k in macro['mods']] \
+            if 'mods' in macro and isinstance(macro['mods'], list) \
+            else []
         
         # Locate the corresponding keycode to specified key name.
         if hasattr(Keycode, key):
-            self.handle = lambda _: macropad.keyboard.send(Keycode.__dict__[key])
+            self.handle = lambda _: macropad.keyboard.send(
+                Keycode.__dict__[key],
+                *mods
+            )
 
         elif hasattr(ConsumerControlCode, key):
-            self.handle = lambda _: macropad.consumer_control.send(ConsumerControlCode.__dict__[key])
+            self.handle = lambda _: macropad.consumer_control.send(
+                ConsumerControlCode.__dict__[key],
+                *mods
+            )
 
         elif hasattr(Mouse, key):
-            self.handle = lambda _: macropad.mouse.send(Mouse.__dict__[key])
+            self.handle = lambda _: macropad.mouse.send(
+                Mouse.__dict__[key],
+                *mods
+            )
 
         message = macro['message'] if 'message' in macro else None
         if message:

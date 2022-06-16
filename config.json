@@ -29,6 +29,51 @@
         "message": "Decrease Brightness"
     },
 
+    "6": {
+        "key": "1",
+        "mods": [
+            "CONTROL",
+            "SHIFT"
+        ],
+        "message": "Toggle Displays"
+    },
+
+    "7": {
+        "key": "2",
+        "mods": [
+            "CONTROL",
+            "SHIFT"
+        ],
+        "message": "Dual Side-by-Side Displays"
+    },
+
+    "8": {
+        "key": "3",
+        "mods": [
+            "CONTROL",
+            "SHIFT"
+        ],
+        "message": "Main, Top, and Side Displays"
+    },
+
+    "9": {
+        "key": "H",
+        "mods": [
+            "CONTROL",
+            "SHIFT"
+        ],
+        "message": "Switch to Headphones"
+    },
+
+    "10": {
+        "key": "S",
+        "mods": [
+            "CONTROL",
+            "ALT"
+        ],
+        "message": "Switch to Speakers"
+    },
+
     "+": {
         "key": "VOLUME_INCREMENT",
         "message": "Volume Up"
