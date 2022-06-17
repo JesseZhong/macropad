@@ -1,21 +1,46 @@
+try:
+    from typing import Dict
+except ImportError:
+    pass
+
 from adafruit_macropad import MacroPad
 from traceback import print_exception
+from json import load
 from macro import Macros
+from ledpixel import LEDPixel
 
 
 class MacroPadManager:
 
     def __init__(
         self,
-        macropad: MacroPad
+        macropad: MacroPad,
+        config_file: str
     ):
         self.macropad = macropad
 
-        # Load and setup macros.
-        self.macros = Macros(
-            './config.json',
-            self.macropad
-        )
+        # Import config.
+        with open(
+            config_file,
+            'rt',
+            encoding='UTF-8'
+        ) as file:
+
+            data: Dict = load(file)
+
+            if data:
+
+                # Load macros.
+                self.macros = Macros(
+                    data['macros'] if 'macros' in data else None,
+                    macropad
+                )
+
+                # Load LED settings.
+                self.leds = LEDPixel(
+                    data['leds'] if 'leds' in data else None,
+                    macropad
+                )
 
         # Track the initial state of the rotary encoder.
         self.rotary_previous = macropad.encoder
@@ -26,6 +51,9 @@ class MacroPadManager:
             Check for any user input and execute
             any user definied macros for said inputs.
         """
+
+        if not hasattr(self, 'macros'):
+            return
 
         # Dequeue all current key events.
         while True:
@@ -57,4 +85,13 @@ class MacroPadManager:
             else:
                 self.macros.execute('+')
 
+        # Save current position for next cycle.
         self.rotary_previous = rotary_current
+
+
+    def handle_leds(
+        self,
+        time_elapsed: float
+    ):
+        if hasattr(self, 'leds'):
+            self.leds.process_leds(time_elapsed)

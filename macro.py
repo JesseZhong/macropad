@@ -71,7 +71,7 @@ class Macros:
 
     def __init__(
         self,
-        config_file: str,
+        data: Dict[str, Macro],
         macropad: MacroPad
     ):
         """
@@ -88,19 +88,12 @@ class Macros:
         # Import macros.
         self.macros: Dict[str, Macro] = {}
 
-        with open(
-            config_file,
-            'rt',
-            encoding='UTF-8'
-        ) as file:
-            data: Dict = load(file)
-
-            if data:
-                for macro_key, macro_config in data.items():
-                    self.macros[macro_key] = Macro(
-                        macropad,
-                        macro_config
-                    )
+        if data:
+            for macro_key, macro_config in data.items():
+                self.macros[macro_key] = Macro(
+                    macropad,
+                    macro_config
+                )
 
 
     def execute(

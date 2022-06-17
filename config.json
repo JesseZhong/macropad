@@ -1,86 +1,88 @@
 {
-    "0": {
-        "key": "MUTE",
-        "message": "Mute"
-    },
+    "macros": {
+        "0": {
+            "key": "MUTE",
+            "message": "Mute"
+        },
 
-    "1": {
-        "key": "PLAY_PAUSE",
-        "message": "Play/Pause"
-    },
+        "1": {
+            "key": "PLAY_PAUSE",
+            "message": "Play/Pause"
+        },
 
-    "2": {
-        "key": "BRIGHTNESS_INCREMENT",
-        "message": "Increase Brightness"
-    },
+        "2": {
+            "key": "BRIGHTNESS_INCREMENT",
+            "message": "Increase Brightness"
+        },
 
-    "3": {
-        "key": "SCAN_PREVIOUS_TRACK",
-        "message": "Previous"
-    },
+        "3": {
+            "key": "SCAN_PREVIOUS_TRACK",
+            "message": "Previous"
+        },
 
-    "4": {
-        "key": "SCAN_NEXT_TRACK",
-        "message": "Next"
-    },
+        "4": {
+            "key": "SCAN_NEXT_TRACK",
+            "message": "Next"
+        },
 
-    "5": {
-        "key": "BRIGHTNESS_DECREMENT",
-        "message": "Decrease Brightness"
-    },
+        "5": {
+            "key": "BRIGHTNESS_DECREMENT",
+            "message": "Decrease Brightness"
+        },
 
-    "6": {
-        "key": "1",
-        "mods": [
-            "CONTROL",
-            "SHIFT"
-        ],
-        "message": "Toggle Displays"
-    },
+        "6": {
+            "key": "F1",
+            "mods": [
+                "CONTROL",
+                "SHIFT"
+            ],
+            "message": "Toggle Displays"
+        },
 
-    "7": {
-        "key": "2",
-        "mods": [
-            "CONTROL",
-            "SHIFT"
-        ],
-        "message": "Dual Side-by-Side Displays"
-    },
+        "7": {
+            "key": "F2",
+            "mods": [
+                "CONTROL",
+                "SHIFT"
+            ],
+            "message": "Dual Side-by-Side Displays"
+        },
 
-    "8": {
-        "key": "3",
-        "mods": [
-            "CONTROL",
-            "SHIFT"
-        ],
-        "message": "Main, Top, and Side Displays"
-    },
+        "8": {
+            "key": "F3",
+            "mods": [
+                "CONTROL",
+                "SHIFT"
+            ],
+            "message": "Main, Top, and Side Displays"
+        },
 
-    "9": {
-        "key": "H",
-        "mods": [
-            "CONTROL",
-            "SHIFT"
-        ],
-        "message": "Switch to Headphones"
-    },
+        "9": {
+            "key": "H",
+            "mods": [
+                "CONTROL",
+                "SHIFT"
+            ],
+            "message": "Switch to Headphones"
+        },
 
-    "10": {
-        "key": "S",
-        "mods": [
-            "CONTROL",
-            "ALT"
-        ],
-        "message": "Switch to Speakers"
-    },
+        "10": {
+            "key": "S",
+            "mods": [
+                "CONTROL",
+                "ALT"
+            ],
+            "message": "Switch to Speakers"
+        },
 
-    "+": {
-        "key": "VOLUME_INCREMENT",
-        "message": "Volume Up"
-    },
+        "+": {
+            "key": "VOLUME_INCREMENT",
+            "message": "Volume Up"
+        },
 
-    "-": {
-        "key": "VOLUME_DECREMENT",
-        "message": "Volume Down"
+        "-": {
+            "key": "VOLUME_DECREMENT",
+            "message": "Volume Down"
+        }
     }
 }
