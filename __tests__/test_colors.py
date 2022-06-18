@@ -7,9 +7,11 @@ class TestColors(unittest.TestCase):
         
         names = {
             'RED': (255, 0, 0),
-            'GREEN': (0, 255, 0),
-            'GOLD': (255, 222, 30),
-            'WHITE': (255, 255, 255)
+            'GREEN': (0, 128, 0),
+            'GOLD': (255, 215, 0),
+            'WHITE': (255, 255, 255),
+            'dark GOLDEN Rod': (184, 134, 11),
+            'Medium Spring Green': (0, 250, 154)
         }
 
         for name, expected in names.items():
@@ -27,12 +29,12 @@ class TestColors(unittest.TestCase):
         hexcodes = {
             '#000000': (0, 0, 0),
             '#1C1C1C': (28, 28, 28),
-            '#641C34': (110, 28, 52),
+            '#641C34': (100, 28, 52),
             '#008F39': (0, 143, 57),
             '#102C54': (16, 44, 84)
         }
 
-        for code, expected in hexcodes:
+        for code, expected in hexcodes.items():
             actual = Colors.parse(code)
 
             self.assertEqual(
