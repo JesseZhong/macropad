@@ -7,7 +7,7 @@ from adafruit_macropad import MacroPad
 from adafruit_hid.keycode import Keycode
 from adafruit_hid.consumer_control_code import ConsumerControlCode
 from adafruit_hid.mouse import Mouse
-from json import load
+from display import Display
 
 
 class Macro:
@@ -15,7 +15,8 @@ class Macro:
     def __init__(
         self,
         macropad: MacroPad,
-        macro: Dict[str, str]
+        macro: Dict[str, str],
+        display: Display
     ):
         # Localize the key name.
         key = macro['key'] if 'key' in macro else None
@@ -48,7 +49,7 @@ class Macro:
 
         message = macro['message'] if 'message' in macro else None
         if message:
-            self.display_message = lambda _: macropad.display_text(message)
+            self.display_message = lambda _: display.write(message)
 
 
     def send(self):
@@ -72,7 +73,8 @@ class Macros:
     def __init__(
         self,
         data: Dict[str, Macro],
-        macropad: MacroPad
+        macropad: MacroPad,
+        display: Display
     ):
         """
             Loads all of the user macros from the file.
@@ -92,7 +94,8 @@ class Macros:
             for macro_key, macro_config in data.items():
                 self.macros[macro_key] = Macro(
                     macropad,
-                    macro_config
+                    macro_config,
+                    display
                 )
 
 

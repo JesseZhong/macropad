@@ -17,9 +17,7 @@ macropad.pixels.fill((0, 255, 128))
 
 while True:
 
-    manager.handle_inputs()
-
-    manager.handle_leds(REFRESH_INTERVAL)
+    manager.update(REFRESH_INTERVAL)
         
     sleep(REFRESH_INTERVAL)
 

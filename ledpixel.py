@@ -22,7 +22,7 @@ class LEDPixel:
         self.brightness = 1.0
 
 
-    def process_leds(
+    def update_leds(
         self,
         time_elapsed: float
     ):

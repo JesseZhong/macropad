@@ -6,6 +6,7 @@ except ImportError:
 from adafruit_macropad import MacroPad
 from traceback import print_exception
 from json import load
+from display import Display
 from macro import Macros
 from ledpixel import LEDPixel
 
@@ -30,20 +31,27 @@ class MacroPadManager:
 
             if data:
 
+                # Load display settings.
+                self.display = Display(
+                    data['display'] if 'display' in data else None,
+                    self.macropad
+                )
+
                 # Load macros.
                 self.macros = Macros(
                     data['macros'] if 'macros' in data else None,
-                    macropad
+                    self.macropad,
+                    self.display
                 )
 
                 # Load LED settings.
                 self.leds = LEDPixel(
                     data['leds'] if 'leds' in data else None,
-                    macropad
+                    self.macropad
                 )
 
         # Track the initial state of the rotary encoder.
-        self.rotary_previous = macropad.encoder
+        self.rotary_previous = self.macropad.encoder
 
 
     def handle_inputs(self):
@@ -89,9 +97,15 @@ class MacroPadManager:
         self.rotary_previous = rotary_current
 
 
-    def handle_leds(
+    def update(
         self,
         time_elapsed: float
     ):
+
+        self.handle_inputs()
+
         if hasattr(self, 'leds'):
-            self.leds.process_leds(time_elapsed)
+            self.leds.update_leds(time_elapsed)
+
+        if hasattr(self, 'display'):
+            self.display.update(time_elapsed)

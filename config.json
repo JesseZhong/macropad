@@ -1,4 +1,8 @@
 {
+    "display": {
+        "title": "Let's GOOO!",
+        "title_scale": 2
+    },
     "macros": {
         "0": {
             "key": "MUTE",
