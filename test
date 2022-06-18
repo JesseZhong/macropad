@@ -1,0 +1,7 @@
+#!/bin/bash
+
+. env/bin/activate
+
+python3 -m unittest discover __tests__
+
+deactivate

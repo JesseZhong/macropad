@@ -18,7 +18,7 @@
     "emeraldwalk.runonsave": {
         "commands": [
             {
-                "match": "\\.(py|json)$",
+                "match": "^((?!settings|test).)*\\.(py|json)$",
                 "cmd": "cp ${file} /media/$(whoami)/CIRCUITPY/"
             }
         ]

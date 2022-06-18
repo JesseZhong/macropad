@@ -7,6 +7,7 @@ from adafruit_macropad import MacroPad
 from adafruit_hid.keycode import Keycode
 from adafruit_hid.consumer_control_code import ConsumerControlCode
 from adafruit_hid.mouse import Mouse
+from auxkeycodes import AuxKeyCode
 from display import Display
 
 
@@ -20,8 +21,10 @@ class Macro:
     ):
         # Localize the key name.
         key = macro['key'] if 'key' in macro else None
-        if not key:
-            return
+        if not key or not isinstance(key, str):
+            raise ValueError('Invalid key.')
+
+        key = key.upper()
 
         # Localize any key modifiers and get their key codes.
         mods = [Keycode.__dict__[k] for k in macro['mods']] \
@@ -35,18 +38,28 @@ class Macro:
                 *mods
             )
 
+        # Check if key is an Adafruit definited consumer control key.
         elif hasattr(ConsumerControlCode, key):
             self.handle = lambda _: macropad.consumer_control.send(
                 ConsumerControlCode.__dict__[key],
                 *mods
             )
 
+        # Check if key is in the auxiliary list of supported keys.
+        elif hasattr(AuxKeyCode, key):
+            self.handle = lambda _: macropad.keyboard.send(
+                AuxKeyCode.__dict__[key],
+                *mods
+            )
+
+        # Maybe mouse buttons?
         elif hasattr(Mouse, key):
             self.handle = lambda _: macropad.mouse.send(
                 Mouse.__dict__[key],
                 *mods
             )
 
+        # Load any messages to show when the key is pressed.
         message = macro['message'] if 'message' in macro else None
         if message:
             self.display_message = lambda _: display.write(message)

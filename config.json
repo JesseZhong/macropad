@@ -1,7 +1,13 @@
 {
+    "orientation": 0,
     "display": {
-        "title": "Let's GOOO!",
+        "title": "oof",
         "title_scale": 2
+    },
+    "leds": {
+        "solid": {
+            "brightness": 0.1
+        }
     },
     "macros": {
         "0": {
@@ -15,8 +21,8 @@
         },
 
         "2": {
-            "key": "BRIGHTNESS_INCREMENT",
-            "message": "Increase Brightness"
+            "key": "SCROLL_UP",
+            "message": "Scroll Up"
         },
 
         "3": {
@@ -30,8 +36,8 @@
         },
 
         "5": {
-            "key": "BRIGHTNESS_DECREMENT",
-            "message": "Decrease Brightness"
+            "key": "SCROLL_DOWN",
+            "message": "Scroll Down"
         },
 
         "6": {
@@ -77,6 +83,11 @@
                 "ALT"
             ],
             "message": "Switch to Speakers"
+        },
+
+        "11": {
+            "key": "CALC",
+            "message": "Calculator"
         },
 
         "+": {

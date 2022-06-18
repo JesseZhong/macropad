@@ -13,8 +13,6 @@ manager = MacroPadManager(
     './config.json'
 )
 
-macropad.pixels.fill((0, 255, 128))
-
 while True:
 
     manager.update(REFRESH_INTERVAL)

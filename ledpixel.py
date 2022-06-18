@@ -4,7 +4,11 @@ except ImportError:
     pass
 
 from adafruit_macropad import MacroPad
+import adafruit_led_animation.animation as anim
 
+
+DEFAULT_COLOR = (255, 255, 255)
+DEFAULT_BRIGHTNESS = 1.0
 
 class LEDPixel:
 
@@ -18,8 +22,28 @@ class LEDPixel:
         # Localize LEDs.
         self.pixels = self.macropad.pixels
 
-        # TODO: Actually do something with this.
-        self.brightness = 1.0
+        if data:
+
+            if 'solid' in data:
+
+                solid = data['solid']
+                
+                self.pixels.fill(
+                    solid['color'] \
+                    if 'color' in solid \
+                    else DEFAULT_COLOR
+                )
+
+                self.brightness = float(solid['brightness']) \
+                    if 'brightness' in solid \
+                    else DEFAULT_BRIGHTNESS
+                
+                self.pixels.brightness = self.brightness
+
+        else:
+            self.pixels.fill(DEFAULT_COLOR)
+            self.brightness = DEFAULT_BRIGHTNESS
+            self.pixels.brightness = self.brightness
 
 
     def update_leds(
