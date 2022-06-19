@@ -105,7 +105,7 @@ class MacroPadManager:
         self.handle_inputs()
 
         if hasattr(self, 'leds'):
-            self.leds.update_leds(time_elapsed)
+            self.leds.update_leds()
 
         if hasattr(self, 'display'):
             self.display.update(time_elapsed)

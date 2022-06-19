@@ -5,8 +5,33 @@
         "title_scale": 2
     },
     "leds": {
-        "solid": {
-            "brightness": 0.1
+        "brightness": 0.8,
+        "_solid": {
+            "color": "teal"
+        },
+        "_rainbow": {
+            "period": 8.0
+        },
+        "_rainbow chase": {
+
+        },
+        "rainbow comet": {
+            "tail length": 10,
+            "ring": true
+        },
+        "_rainbow sparkle": {
+
+        },
+        "_blink": {
+            "color": "green",
+            "speed": 3
+        },
+        "_pulse": {
+            "color": "salmon"
+        },
+        "_sparkle pulse": {
+            "color": "indigo",
+            "min intensity": 0.4
         }
     },
     "macros": {
