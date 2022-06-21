@@ -17,7 +17,7 @@ circup update
 
 # Copy the code into the board.
 # This is assuming your board is mounted on /media/
-cp *.py *.json /media/$(whoami)/CIRCUITPY/
+cp *.py *.json *.pcf /media/$(whoami)/CIRCUITPY/
 
 # Deactivate environment.
 deactivate

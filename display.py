@@ -4,10 +4,11 @@ except ImportError:
     pass
 
 from adafruit_macropad import MacroPad
+from adafruit_bitmap_font import bitmap_font
 
+FONT = bitmap_font.load_font('NotoMono-10.pcf')
 
 MESSAGE_TIMEOUT = 2.0
-
 
 class Display:
 
@@ -40,7 +41,8 @@ class Display:
     ):
         self.text_display = self.macropad.display_text(
             title=self.title,
-            title_scale=self.title_scale
+            title_scale=self.title_scale,
+            font=FONT
         )
         self.written = False
         self.timeout = 0

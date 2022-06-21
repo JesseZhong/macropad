@@ -5,8 +5,8 @@
         "title_scale": 2
     },
     "leds": {
-        "brightness": 0.8,
-        "_solid": {
+        "brightness": 0.4,
+        "solid": {
             "color": "teal"
         },
         "_rainbow": {
@@ -15,7 +15,7 @@
         "_rainbow chase": {
 
         },
-        "rainbow comet": {
+        "_rainbow comet": {
             "tail length": 10,
             "ring": true
         },
@@ -27,22 +27,23 @@
             "speed": 3
         },
         "_pulse": {
-            "color": "salmon"
+            "color": "teal",
+            "period": 8.0
         },
         "_sparkle pulse": {
-            "color": "indigo",
+            "color": "cyan",
             "min intensity": 0.4
         }
     },
     "macros": {
         "0": {
             "key": "MUTE",
-            "message": "Mute"
+            "message": "🕨 Mute"
         },
 
         "1": {
             "key": "PLAY_PAUSE",
-            "message": "Play/Pause"
+            "message": "⏯ Play/Pause"
         },
 
         "2": {
@@ -52,12 +53,12 @@
 
         "3": {
             "key": "SCAN_PREVIOUS_TRACK",
-            "message": "Previous"
+            "message": "⏮ Previous"
         },
 
         "4": {
             "key": "SCAN_NEXT_TRACK",
-            "message": "Next"
+            "message": "⏭ Next"
         },
 
         "5": {
@@ -117,12 +118,12 @@
 
         "+": {
             "key": "VOLUME_INCREMENT",
-            "message": "Volume Up"
+            "message": "🕪 Volume Up"
         },
 
         "-": {
             "key": "VOLUME_DECREMENT",
-            "message": "Volume Down"
+            "message": "🕩 Volume Down"
         }
     }
 }
