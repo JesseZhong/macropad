@@ -2,7 +2,7 @@
     "orientation": 0,
     "display": {
         "title": "oof",
-        "title_scale": 2
+        "title_scale": 1
     },
     "leds": {
         "brightness": 0.4,
@@ -43,7 +43,7 @@
 
         "1": {
             "key": "PLAY_PAUSE",
-            "message": "⏯ Play/Pause"
+            "message": "⏯Play/Pause"
         },
 
         "2": {
@@ -53,12 +53,12 @@
 
         "3": {
             "key": "SCAN_PREVIOUS_TRACK",
-            "message": "⏮ Previous"
+            "message": "⏮Previous"
         },
 
         "4": {
             "key": "SCAN_NEXT_TRACK",
-            "message": "⏭ Next"
+            "message": "⏭Next"
         },
 
         "5": {

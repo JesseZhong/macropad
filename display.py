@@ -6,7 +6,7 @@ except ImportError:
 from adafruit_macropad import MacroPad
 from adafruit_bitmap_font import bitmap_font
 
-FONT = bitmap_font.load_font('NotoMono-10.pcf')
+FONT = bitmap_font.load_font('NotoMono-16.pcf')
 
 MESSAGE_TIMEOUT = 2.0
 
