@@ -4,9 +4,7 @@ except ImportError:
     pass
 
 from adafruit_macropad import MacroPad
-from adafruit_bitmap_font import bitmap_font
-
-FONT = bitmap_font.load_font('NotoMono-16.pcf')
+from components.glyphs import Glyphs
 
 MESSAGE_TIMEOUT = 2.0
 
@@ -32,6 +30,10 @@ class Display:
             MESSAGE_TIMEOUT
         )
 
+        # Load font.
+        # TODO: Better way to load in font based off user config.
+        self.glyphs = Glyphs('fonts/notomono-forkawesome-32.pcf')
+
         self.macropad = macropad
         self.clear()
 
@@ -40,9 +42,9 @@ class Display:
         self
     ):
         self.text_display = self.macropad.display_text(
-            title=self.title,
+            title=self.glyphs.normalize(self.title),
             title_scale=self.title_scale,
-            font=FONT
+            font=self.glyphs.font
         )
         self.written = False
         self.timeout = 0
@@ -53,7 +55,7 @@ class Display:
         self,
         message: str
     ):
-        self.text_display[0].text = message
+        self.text_display[0].text = self.glyphs.normalize(message)
         self.written = True
         self.timeout = MESSAGE_TIMEOUT
         self.text_display.show()

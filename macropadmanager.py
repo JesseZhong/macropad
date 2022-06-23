@@ -6,9 +6,9 @@ except ImportError:
 from adafruit_macropad import MacroPad
 from traceback import print_exception
 from json import load
-from display import Display
-from macro import Macros
-from ledpixel import LEDPixel
+from components.display import Display
+from components.macro import Macros
+from components.ledpixel import LEDPixel
 
 
 class MacroPadManager:

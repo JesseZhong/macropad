@@ -1,5 +1,5 @@
 import unittest
-from colors import Colors
+from components.colors import Colors
 
 class TestColors(unittest.TestCase):
 

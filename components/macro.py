@@ -7,8 +7,8 @@ from adafruit_macropad import MacroPad
 from adafruit_hid.keycode import Keycode
 from adafruit_hid.consumer_control_code import ConsumerControlCode
 from adafruit_hid.mouse import Mouse
-from auxkeycodes import AuxKeyCode
-from display import Display
+from components.auxkeycodes import AuxKeyCode
+from components.display import Display
 
 
 class Macro:

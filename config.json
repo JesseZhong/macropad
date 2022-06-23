@@ -1,7 +1,7 @@
 {
     "orientation": 0,
     "display": {
-        "title": "oof",
+        "title": "",
         "title_scale": 1
     },
     "leds": {
@@ -38,32 +38,37 @@
     "macros": {
         "0": {
             "key": "MUTE",
-            "message": "🕨 Mute"
+            "message": "f{volume_mute}"
         },
 
         "1": {
             "key": "PLAY_PAUSE",
-            "message": "⏯Play/Pause"
+            "message": "f{play} f{pause}"
         },
 
         "2": {
-            "key": "SCROLL_UP",
-            "message": "Scroll Up"
+
+            "key": "F4",
+            "mods": [
+                "CONTROL",
+                "SHIFT"
+            ],
+            "message": "f{music}"
         },
 
         "3": {
             "key": "SCAN_PREVIOUS_TRACK",
-            "message": "⏮Previous"
+            "message": "f{fast_backward}"
         },
 
         "4": {
             "key": "SCAN_NEXT_TRACK",
-            "message": "⏭Next"
+            "message": "f{fast_forward}"
         },
 
         "5": {
-            "key": "SCROLL_DOWN",
-            "message": "Scroll Down"
+            "key": "COFFEE",
+            "message": "f{coffee}/f{lock}"
         },
 
         "6": {
@@ -72,7 +77,7 @@
                 "CONTROL",
                 "SHIFT"
             ],
-            "message": "Toggle Displays"
+            "message": "f{desktop} 1"
         },
 
         "7": {
@@ -81,7 +86,7 @@
                 "CONTROL",
                 "SHIFT"
             ],
-            "message": "Dual Side-by-Side Displays"
+            "message": "f{desktop} 2"
         },
 
         "8": {
@@ -90,7 +95,7 @@
                 "CONTROL",
                 "SHIFT"
             ],
-            "message": "Main, Top, and Side Displays"
+            "message": "f{desktop} 3"
         },
 
         "9": {
@@ -99,7 +104,7 @@
                 "CONTROL",
                 "SHIFT"
             ],
-            "message": "Switch to Headphones"
+            "message": "f{headphones}"
         },
 
         "10": {
@@ -108,22 +113,22 @@
                 "CONTROL",
                 "ALT"
             ],
-            "message": "Switch to Speakers"
+            "message": "f{volume_off}"
         },
 
         "11": {
             "key": "CALC",
-            "message": "Calculator"
+            "message": "f{calculator}"
         },
 
         "+": {
             "key": "VOLUME_INCREMENT",
-            "message": "🕪 Volume Up"
+            "message": "f{volume_up}"
         },
 
         "-": {
             "key": "VOLUME_DECREMENT",
-            "message": "🕩 Volume Down"
+            "message": "f{volume_down}"
         }
     }
 }

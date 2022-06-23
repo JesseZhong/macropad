@@ -12,7 +12,7 @@ from adafruit_led_animation.animation.blink import Blink
 from adafruit_led_animation.animation.pulse import Pulse
 from adafruit_led_animation.animation.solid import Solid
 from adafruit_led_animation.animation.sparklepulse import SparklePulse
-from colors import Colors
+from components.colors import Colors
 
 
 DEFAULT_COLOR = (255, 255, 255)
