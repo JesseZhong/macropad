@@ -27,6 +27,8 @@ class Glyphs:
 
             key = match.group(1).lower()
 
+            key = re.sub(r'[_ ]', '-', key)
+
             if key in Glyphs.__dict__:
 
                 code_point = Glyphs.__dict__[key]

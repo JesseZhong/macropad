@@ -30,34 +30,28 @@ class Macro:
         mods = [Keycode.__dict__[k] for k in macro['mods']] \
             if 'mods' in macro and isinstance(macro['mods'], list) \
             else []
-        
+
+        macroTypes = {
+            Keycode: macropad.keyboard,
+
+            # Adafruit definited consumer control key.
+            ConsumerControlCode: macropad.consumer_control,
+
+            # Auxiliary list of supported keys.
+            AuxKeyCode: macropad.keyboard,
+
+            # Mouse buttons?
+            Mouse: macropad.mouse
+        }
+
         # Locate the corresponding keycode to specified key name.
-        if hasattr(Keycode, key):
-            self.handle = lambda _: macropad.keyboard.send(
-                Keycode.__dict__[key],
-                *mods
-            )
-
-        # Check if key is an Adafruit definited consumer control key.
-        elif hasattr(ConsumerControlCode, key):
-            self.handle = lambda _: macropad.consumer_control.send(
-                ConsumerControlCode.__dict__[key],
-                *mods
-            )
-
-        # Check if key is in the auxiliary list of supported keys.
-        elif hasattr(AuxKeyCode, key):
-            self.handle = lambda _: macropad.keyboard.send(
-                AuxKeyCode.__dict__[key],
-                *mods
-            )
-
-        # Maybe mouse buttons?
-        elif hasattr(Mouse, key):
-            self.handle = lambda _: macropad.mouse.send(
-                Mouse.__dict__[key],
-                *mods
-            )
+        for type, device in macroTypes.items():
+            if hasattr(type, key):
+                self.handle = lambda _: device.send(
+                        type.__dict__[key],
+                        *mods
+                    )
+                break
 
         # Load any messages to show when the key is pressed.
         message = macro['message'] if 'message' in macro else None
@@ -86,6 +80,7 @@ class Macros:
     def __init__(
         self,
         data: Dict[str, Macro],
+        modified_data: Dict[str, Macro],
         macropad: MacroPad,
         display: Display
     ):
@@ -101,24 +96,49 @@ class Macros:
         """
 
         # Import macros.
-        self.macros: Dict[str, Macro] = {}
+        self.macros: Dict[str, Macro] = self.process_data(
+            data,
+            macropad,
+            display
+        )
+
+        # Import modified macros.
+        self.modified_macros: Dict[str, Macro] = self.process_data(
+            modified_data,
+            macropad,
+            display
+        )
+
+    def process_data(
+        self,
+        data: Dict[str, Macro],
+        macropad: MacroPad,
+        display: Display
+    ):
+        result: Dict[str, Macro] = {}
 
         if data:
             for macro_key, macro_config in data.items():
-                self.macros[macro_key] = Macro(
+                result[macro_key] = Macro(
                     macropad,
                     macro_config,
                     display
                 )
 
+        return result
+
 
     def execute(
         self,
-        key: str
+        key: str,
+        modified: bool
     ):
         """
             Check if a key has a defined macro for it.
             Execute the macro if it does.
         """
-        if key in self.macros:
+        if modified and key in self.modified_macros:
+            self.modified_macros[key].send()
+
+        elif key in self.macros:
             self.macros[key].send()

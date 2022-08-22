@@ -40,6 +40,7 @@ class MacroPadManager:
                 # Load macros.
                 self.macros = Macros(
                     data['macros'] if 'macros' in data else None,
+                    data['modified_macros'] if 'modified_macros' in data else None,
                     self.macropad,
                     self.display
                 )
@@ -63,6 +64,10 @@ class MacroPadManager:
         if not hasattr(self, 'macros'):
             return
 
+        # Toggle LEDs. DO NOT localize switch, as state changes aren't tracked.
+        # TODO: Move all this to LED module.
+        self.macropad.encoder_switch_debounced.update()
+
         # Dequeue all current key events.
         while True:
             event = self.macropad.keys.events.get()
@@ -77,7 +82,10 @@ class MacroPadManager:
                 
                 if event.pressed:
                     try:
-                        self.macros.execute(str(code))
+                        self.macros.execute(
+                            str(code),
+                            self.macropad.encoder_switch_debounced.pressed
+                        )
                     except Exception as e:
                         print_exception(e, e, e.__traceback__)
 

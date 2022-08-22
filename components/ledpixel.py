@@ -44,101 +44,19 @@ class LEDPixel:
                         else default
 
                 return get
-
             
             self.brightness = data['brightness'] if 'brightness' in data else DEFAULT_BRIGHTNESS
             self.pixels.brightness = self.brightness
 
-            if 'solid' in data:
+            # Check for LED configs for different animation types.
+            for name, animation in LEDAnimation.__dict__.items():
+                nice_name = name.replace('_', ' ')
 
-                solid = fetch('solid')
-
-                self.animation = Solid(
-                    self.pixels,
-                    solid('color', Colors.parse, DEFAULT_COLOR)
-                )
-
-            elif 'rainbow' in data:
-
-                rb = fetch('rainbow')
-
-                self.animation = Rainbow(
-                    self.pixels,
-                    rb('speed', float, DEFAULT_SPEED),
-                    rb('period', float, 5.0)
-                )
-
-            elif 'rainbow chase' in data:
-
-                rbc = fetch('rainbow chase')
-
-                self.animation = RainbowChase(
-                    self.pixels,
-                    rbc('speed', float, DEFAULT_SPEED),
-                    size=rbc('size', int, 2),
-                    spacing=rbc('spacing', int, 3),
-                    reverse=rbc('reverse', bool, False),
-                    step=rbc('step', int, 8)
-                )
-
-            elif 'rainbow comet' in data:
-
-                rbc = fetch('rainbow comet')
-
-                self.animation = RainbowComet(
-                    self.pixels,
-                    rbc('speed', float, DEFAULT_SPEED),
-                    tail_length=rbc('tail length', int, 10),
-                    reverse=rbc('reverse', bool, False),
-                    bounce=rbc('bounce', bool, False),
-                    ring=rbc('ring', bool, False)
-                )
-
-            elif 'rainbow sparkle' in data:
-
-                rbs = fetch('rainbow sparkle')
-
-                self.animation = RainbowSparkle(
-                    self.pixels,
-                    rbs('speed', float, DEFAULT_SPEED),
-                    period=rbs('period', float, 5.0),
-                    num_sparkles=rbs('sparkles', int, None),
-                    step=rbs('step', int, 1)
-                )
-
-            elif 'blink' in data:
-
-                blink = fetch('blink')
-
-                self.animation = Blink(
-                    self.pixels,
-                    blink('speed', float, DEFAULT_SPEED),
-                    blink('color', Colors.parse, DEFAULT_COLOR)
-                )
-
-            elif 'pulse' in data:
-
-                pulse = fetch('pulse')
-
-                self.animation = Pulse(
-                    self.pixels,
-                    pulse('speed', float, DEFAULT_SPEED),
-                    pulse('color', Colors.parse, DEFAULT_COLOR),
-                    period=pulse('period', float, 5.0)
-                )
-
-            elif 'sparkle pulse' in data:
-
-                sp = fetch('sparkle pulse')
-
-                self.animation = SparklePulse(
-                    self.pixels,
-                    sp('speed', float, DEFAULT_SPEED),
-                    sp('color', Colors.parse, DEFAULT_COLOR),
-                    sp('period', float, 5.0),
-                    sp('max intensity', float, 1.0),
-                    sp('min intensity', float, 0)
-                )
+                if nice_name in data:
+                    self.animation = animation(
+                        self.pixels,
+                        fetch(nice_name)
+                    )
 
         else:
             self.pixels.fill(DEFAULT_COLOR)
@@ -150,13 +68,133 @@ class LEDPixel:
         """
             Update the animations for the LEDs.
         """
-
-        # Toggle LEDs. DO NOT localize switch, as state changes aren't tracked.
-        # TODO: Move all this to LED module.
-        self.macropad.encoder_switch_debounced.update()
-        if self.macropad.encoder_switch_debounced.released:
-
-            self.pixels.brightness = 0 if self.pixels.brightness > 0 else self.brightness
-
         if hasattr(self, 'animation'):
             self.animation.animate()
+
+
+    @property
+    def on(self):
+        """
+            Indicate if the LEDs are on or off.
+        """
+        return self.pixels.brightness > 0
+
+
+    @on.setter
+    def on(
+        self,
+        value: bool
+    ):
+        """
+            Set the LEDs on or off.
+        """
+        self.pixels.brightness = 0 if value else self.brightness
+
+
+    def toggle(self):
+        """
+            Toggle the LEDs on or off.
+        """
+        self.pixels.brightness = 0 if self.pixels.brightness > 0 else self.brightness
+
+
+class LEDAnimation:
+
+
+    def solid(
+        pixels,
+        solid
+    ):
+        return Solid(
+            pixels,
+            solid('color', Colors.parse, DEFAULT_COLOR)
+        )
+
+
+    def rainbow(
+        pixels,
+        rb
+    ):
+        return Rainbow(
+            pixels,
+            rb('speed', float, DEFAULT_SPEED),
+            rb('period', float, 5.0)
+        )
+
+
+    def rainbow_chase(
+        pixels,
+        rbc
+    ):
+        return RainbowChase(
+            pixels,
+            rbc('speed', float, DEFAULT_SPEED),
+            size=rbc('size', int, 2),
+            spacing=rbc('spacing', int, 3),
+            reverse=rbc('reverse', bool, False),
+            step=rbc('step', int, 8)
+        )
+
+
+    def rainbow_comet(
+        pixels,
+        rbc
+    ):
+        return RainbowComet(
+            pixels,
+            rbc('speed', float, DEFAULT_SPEED),
+            tail_length=rbc('tail length', int, 10),
+            reverse=rbc('reverse', bool, False),
+            bounce=rbc('bounce', bool, False),
+            ring=rbc('ring', bool, False)
+        )
+
+
+    def rainbow_sparkle(
+        pixels,
+        rbs
+    ):
+        return RainbowSparkle(
+            pixels,
+            rbs('speed', float, DEFAULT_SPEED),
+            period=rbs('period', float, 5.0),
+            num_sparkles=rbs('sparkles', int, None),
+            step=rbs('step', int, 1)
+        )
+
+
+    def blink(
+        pixels,
+        blink
+    ):
+        return Blink(
+            pixels,
+            blink('speed', float, DEFAULT_SPEED),
+            blink('color', Colors.parse, DEFAULT_COLOR)
+        )
+
+
+    def pulse(
+        pixels,
+        pulse
+    ):
+        return Pulse(
+            pixels,
+            pulse('speed', float, DEFAULT_SPEED),
+            pulse('color', Colors.parse, DEFAULT_COLOR),
+            period=pulse('period', float, 5.0)
+        )
+
+
+    def sparkle_pulse(
+        pixels,
+        sp
+    ):
+        return SparklePulse(
+            pixels,
+            sp('speed', float, DEFAULT_SPEED),
+            sp('color', Colors.parse, DEFAULT_COLOR),
+            sp('period', float, 5.0),
+            sp('max intensity', float, 1.0),
+            sp('min intensity', float, 0)
+        )
