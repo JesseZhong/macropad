@@ -1,9 +1,10 @@
 try:
-    from typing import Dict, Any, Callable
+    from typing import Dict, Tuple, Any, Callable
 except ImportError:
     pass
 
 from adafruit_macropad import MacroPad
+from adafruit_led_animation.animation import Animation
 from adafruit_led_animation.animation.rainbow import Rainbow
 from adafruit_led_animation.animation.rainbowchase import RainbowChase
 from adafruit_led_animation.animation.rainbowcomet import RainbowComet
@@ -19,6 +20,9 @@ DEFAULT_COLOR = (255, 255, 255)
 DEFAULT_BRIGHTNESS = 1.0
 DEFAULT_SPEED = 0.1
 
+
+STARTING_ANIMATION_KEY = 'starting animation'
+
 class LEDPixel:
 
     def __init__(
@@ -31,32 +35,51 @@ class LEDPixel:
         # Localize LEDs.
         self.pixels = self.macropad.pixels
 
+        self.animations: Dict[str, Animation] = {}
+        
+        # Load LED settings.
         if data:
-
-            def fetch(obj_name: str):
-                def get(
-                    field: str,
-                    cast: Callable[[Any], Any],
-                    default: Any
-                ):
-                    return cast(data[obj_name][field]) \
-                        if field in data[obj_name] \
-                        else default
-
-                return get
-            
+                
             self.brightness = data['brightness'] if 'brightness' in data else DEFAULT_BRIGHTNESS
             self.pixels.brightness = self.brightness
 
-            # Check for LED configs for different animation types.
-            for name, animation in LEDAnimation.__dict__.items():
-                nice_name = name.replace('_', ' ')
+            # Load animation configurations.
+            if 'animations' in data:
+                settings = data['animations']
 
-                if nice_name in data:
-                    self.animation = animation(
-                        self.pixels,
-                        fetch(nice_name)
-                    )
+                for setting_name, setting in settings.items():
+
+                    # Safely get configuration values for an animation,
+                    # using defaults when no values are provided
+                    def get(
+                        field: str,
+                        cast: Callable[[Any], Any],
+                        default: Any
+                    ):
+                        return cast(setting[field]) \
+                            if field in setting \
+                            else default
+
+                    
+                    if 'type' in setting:
+                        anim_type = setting['type'].replace(' ', '_')
+
+                        # Check if the animation type exists.
+                        types = LEDAnimation.__dict__
+                        if anim_type in types and callable(types[anim_type]):
+
+                            # Load the animation, using any user defined values.
+                            self.animations[setting_name] = types[anim_type](
+                                self.pixels,
+                                get
+                            )
+
+
+            # Set the starting, default animation.
+            # Otherwise use solid as default.
+            self.animation = self.animations[data[STARTING_ANIMATION_KEY]] \
+                if STARTING_ANIMATION_KEY in data and data[STARTING_ANIMATION_KEY] in self.animations \
+                else Solid(self.pixels, DEFAULT_COLOR)
 
         else:
             self.pixels.fill(DEFAULT_COLOR)
@@ -99,7 +122,6 @@ class LEDPixel:
 
 
 class LEDAnimation:
-
 
     def solid(
         pixels,

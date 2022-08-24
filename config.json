@@ -5,34 +5,34 @@
         "title_scale": 1
     },
     "leds": {
-        "brightness": 0.4,
-        "solid": {
-            "color": "teal"
-        },
-        "_rainbow": {
-            "period": 8.0
-        },
-        "_rainbow chase": {
-
-        },
-        "_rainbow comet": {
-            "tail length": 10,
-            "ring": true
-        },
-        "_rainbow sparkle": {
-
-        },
-        "_blink": {
-            "color": "green",
-            "speed": 3
-        },
-        "_pulse": {
-            "color": "teal",
-            "period": 8.0
-        },
-        "_sparkle pulse": {
-            "color": "cyan",
-            "min intensity": 0.4
+        "brightness": 0.6,
+        "starting animation": "default",
+        "animations": {
+            "default": {
+                "type": "solid",
+                "color": "teal"
+            },
+            "waves": {
+                "type": "rainbow comet",
+                "tail length": 10,
+                "ring": true,
+                "speed": 0.12
+            },
+            "green blink": {
+                "type": "blink",
+                "color": "green",
+                "speed": 3
+            },
+            "breathing": {
+                "type": "pulse",
+                "color": "teal",
+                "period": 8.0
+            },
+            "glitter": {
+                "type": "sparkle pulse",
+                "color": "cyan",
+                "min intensity": 0.4
+            }
         }
     },
     "macros": {
