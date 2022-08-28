@@ -1,5 +1,5 @@
 try:
-    from typing import Dict
+    from typing import Dict, List, Callable
 except ImportError:
     pass
 
@@ -9,49 +9,102 @@ from adafruit_hid.consumer_control_code import ConsumerControlCode
 from adafruit_hid.mouse import Mouse
 from components.auxkeycodes import AuxKeyCode
 from components.display import Display
+from components.controller import Controller
 
 
 class Macro:
 
     def __init__(
         self,
+        macro_key: str,
         macropad: MacroPad,
         macro: Dict[str, str],
-        display: Display
+        display: Display,
+        controller: Controller
     ):
         # Localize the key name.
         key = macro['key'] if 'key' in macro else None
-        if not key or not isinstance(key, str):
-            raise ValueError('Invalid key.')
 
-        key = key.upper()
+        if key:
+            if not key or not isinstance(key, str):
+                raise ValueError('Invalid key.')
 
-        # Localize any key modifiers and get their key codes.
-        mods = [Keycode.__dict__[k] for k in macro['mods']] \
-            if 'mods' in macro and isinstance(macro['mods'], list) \
-            else []
+            key = key.upper()
 
-        macroTypes = {
-            Keycode: macropad.keyboard,
+            # Localize any key modifiers and get their key codes.
+            mods = [Keycode.__dict__[k] for k in macro['mods']] \
+                if 'mods' in macro and isinstance(macro['mods'], list) \
+                else []
 
-            # Adafruit definited consumer control key.
-            ConsumerControlCode: macropad.consumer_control,
+            macroTypes = {
+                Keycode: macropad.keyboard,
 
-            # Auxiliary list of supported keys.
-            AuxKeyCode: macropad.keyboard,
+                # Adafruit definited consumer control key.
+                ConsumerControlCode: macropad.consumer_control,
 
-            # Mouse buttons?
-            Mouse: macropad.mouse
-        }
+                # Auxiliary list of supported keys.
+                AuxKeyCode: macropad.keyboard,
 
-        # Locate the corresponding keycode to specified key name.
-        for type, device in macroTypes.items():
-            if hasattr(type, key):
-                self.handle = lambda _: device.send(
-                        type.__dict__[key],
-                        *mods
-                    )
-                break
+                # Mouse buttons?
+                Mouse: macropad.mouse
+            }
+
+            # Locate the corresponding keycode to specified key name.
+            for type, device in macroTypes.items():
+                if hasattr(type, key):
+                    self.send_keys = lambda _: device.send(
+                            type.__dict__[key],
+                            *mods
+                        )
+                    break
+
+
+        # Localize state changes.
+        state = macro['state'] if 'state' in macro else None
+
+        if state:
+            tasks: List[Callable] = []
+
+            if 'animation' in state:
+                """Lookup"""
+
+            if 'brightness' in state:
+                """Value or +/-"""
+
+            if 'lock' in state:
+                """
+                    Allows for: true, false, 'toggle'
+                """
+                lock = state['lock']
+
+                if lock == 'toggle':
+                    def toggle_lock():
+                        controller.locked = not controller.locked
+                        print(controller.locked)
+
+                    controller.add_lock_key(macro_key)
+
+                    tasks.append(toggle_lock)
+
+                else:
+                    try:
+                        lock_value = bool(lock)
+
+                        def set_lock():
+                            controller.locked = lock_value
+
+                        controller.add_lock_key(macro_key)
+
+                        tasks.append(set_lock)
+                    except ValueError:
+                        pass
+
+
+            def alter_state():
+                for task in tasks:
+                    task()
+
+            self.alter_state = alter_state
 
         # Load any messages to show when the key is pressed.
         message = macro['message'] if 'message' in macro else None
@@ -59,17 +112,21 @@ class Macro:
             self.display_message = lambda _: display.write(message)
 
 
-    def send(self):
+    def execute(self):
         """
-            Send key to receiving device and
-            display a message if available.
+            Send key to receiving device,
+            change macropad state,
+            and/or display a message if available.
         """
         
-        if hasattr(self, 'handle'):
-            self.handle(None)
+        if hasattr(self, 'send_keys'):
+            self.send_keys(None)
 
-            if hasattr(self, 'display_message'):
-                self.display_message(None)
+        if hasattr(self, 'alter_state'):
+            self.alter_state()
+
+        if hasattr(self, 'display_message'):
+            self.display_message(None)
 
 
 class Macros:
@@ -82,7 +139,8 @@ class Macros:
         data: Dict[str, Macro],
         modified_data: Dict[str, Macro],
         macropad: MacroPad,
-        display: Display
+        display: Display,
+        controller: Controller
     ):
         """
             Loads all of the user macros from the file.
@@ -99,30 +157,35 @@ class Macros:
         self.macros: Dict[str, Macro] = self.process_data(
             data,
             macropad,
-            display
+            display,
+            controller
         )
 
         # Import modified macros.
         self.modified_macros: Dict[str, Macro] = self.process_data(
             modified_data,
             macropad,
-            display
+            display,
+            controller
         )
 
     def process_data(
         self,
         data: Dict[str, Macro],
         macropad: MacroPad,
-        display: Display
+        display: Display,
+        controller: Controller
     ):
         result: Dict[str, Macro] = {}
 
         if data:
             for macro_key, macro_config in data.items():
                 result[macro_key] = Macro(
+                    macro_key,
                     macropad,
                     macro_config,
-                    display
+                    display,
+                    controller
                 )
 
         return result
@@ -138,7 +201,7 @@ class Macros:
             Execute the macro if it does.
         """
         if modified and key in self.modified_macros:
-            self.modified_macros[key].send()
+            self.modified_macros[key].execute()
 
-        elif key in self.macros:
-            self.macros[key].send()
+        elif not modified and key in self.macros:
+            self.macros[key].execute()

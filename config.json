@@ -130,5 +130,14 @@
             "key": "VOLUME_DECREMENT",
             "message": "f{volume_down}"
         }
+    },
+
+    "modified_macros": {
+        "0": {
+            "state": {
+                "lock": "toggle"
+            },
+            "message": "f{lock}"
+        }
     }
 }

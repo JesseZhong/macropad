@@ -6,6 +6,7 @@ except ImportError:
 from adafruit_macropad import MacroPad
 from traceback import print_exception
 from json import load
+from components.controller import Controller
 from components.display import Display
 from components.macro import Macros
 from components.ledpixel import LEDPixel
@@ -19,6 +20,7 @@ class MacroPadManager:
         config_file: str
     ):
         self.macropad = macropad
+        self.controller = Controller()
 
         # Import config.
         with open(
@@ -42,7 +44,8 @@ class MacroPadManager:
                     data['macros'] if 'macros' in data else None,
                     data['modified_macros'] if 'modified_macros' in data else None,
                     self.macropad,
-                    self.display
+                    self.display,
+                    self.controller
                 )
 
                 # Load LED settings.
@@ -77,14 +80,17 @@ class MacroPadManager:
                 break
 
             # Check for for a key code.
-            code = event.key_number
-            if code != None:
-                
-                if event.pressed:
+            key_number = event.key_number
+            if key_number != None:
+
+                if event.pressed and (
+                    not self.controller.locked or \
+                    self.controller.is_lock_key(str(key_number))
+                ):
                     try:
                         self.macros.execute(
-                            str(code),
-                            self.macropad.encoder_switch_debounced.pressed
+                            str(key_number),
+                            not self.macropad.encoder_switch_debounced.value
                         )
                     except Exception as e:
                         print_exception(e, e, e.__traceback__)
@@ -97,9 +103,15 @@ class MacroPadManager:
         if self.rotary_previous != rotary_current:
 
             if (self.rotary_previous - rotary_current) > 0:
-                self.macros.execute('-')
+                self.macros.execute(
+                    '-',
+                    self.macropad.encoder_switch_debounced.pressed
+                )
             else:
-                self.macros.execute('+')
+                self.macros.execute(
+                    '+',
+                    self.macropad.encoder_switch_debounced.pressed
+                )
 
         # Save current position for next cycle.
         self.rotary_previous = rotary_current
