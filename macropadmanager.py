@@ -20,7 +20,6 @@ class MacroPadManager:
         config_file: str
     ):
         self.macropad = macropad
-        self.controller = Controller()
 
         # Import config.
         with open(
@@ -39,6 +38,17 @@ class MacroPadManager:
                     self.macropad
                 )
 
+                # Load LED settings.
+                self.leds = LEDPixel(
+                    data['leds'] if 'leds' in data else None,
+                    self.macropad
+                )
+
+                # Setup the controller.
+                self.controller = Controller(
+                    self.leds
+                )
+
                 # Load macros.
                 self.macros = Macros(
                     data['macros'] if 'macros' in data else None,
@@ -46,12 +56,6 @@ class MacroPadManager:
                     self.macropad,
                     self.display,
                     self.controller
-                )
-
-                # Load LED settings.
-                self.leds = LEDPixel(
-                    data['leds'] if 'leds' in data else None,
-                    self.macropad
                 )
 
         # Track the initial state of the rotary encoder.
@@ -81,16 +85,20 @@ class MacroPadManager:
 
             # Check for for a key code.
             key_number = event.key_number
+            encoder_down = not self.macropad.encoder_switch_debounced.value
             if key_number != None:
 
                 if event.pressed and (
                     not self.controller.locked or \
-                    self.controller.is_lock_key(str(key_number))
+                    (
+                        self.controller.is_lock_key(str(key_number)) and \
+                        encoder_down
+                    )
                 ):
                     try:
                         self.macros.execute(
                             str(key_number),
-                            not self.macropad.encoder_switch_debounced.value
+                            encoder_down
                         )
                     except Exception as e:
                         print_exception(e, e, e.__traceback__)

@@ -3,12 +3,19 @@ try:
 except ImportError:
     pass
 
+from components.ledpixel import LEDPixel
+
 
 class Controller:
 
-    def __init__(self):
+    def __init__(
+        self,
+        pixel: LEDPixel
+    ):
         self._lock_keys: Set[str] = set()
         self._locked = False
+
+        self.pixel = pixel
 
 
     def add_lock_key(

@@ -71,6 +71,31 @@ class Macro:
             if 'brightness' in state:
                 """Value or +/-"""
 
+            if 'led' in state:
+                """
+                    Allows for: true, false, 'toggle'
+                """
+                led = state['led']
+
+                if led == 'toggle':
+                    def toggle_led():
+                        controller.pixel.toggle()
+                        
+
+                    tasks.append(toggle_led)
+
+                else:
+                    try:
+                        led_value = bool(led)
+
+                        def set_led():
+                            controller.pixel.on = led_value
+
+                        tasks.append(set_led)
+                    except ValueError:
+                        pass
+
+
             if 'lock' in state:
                 """
                     Allows for: true, false, 'toggle'
@@ -80,7 +105,6 @@ class Macro:
                 if lock == 'toggle':
                     def toggle_lock():
                         controller.locked = not controller.locked
-                        print(controller.locked)
 
                     controller.add_lock_key(macro_key)
 

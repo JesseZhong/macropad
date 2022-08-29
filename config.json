@@ -138,6 +138,12 @@
                 "lock": "toggle"
             },
             "message": "f{lock}"
+        },
+        "1": {
+            "state": {
+                "led": "toggle"
+            },
+            "message": "f{sun}"
         }
     }
 }

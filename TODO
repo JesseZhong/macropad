@@ -2,4 +2,5 @@ Add day/night cycling modes.
 Dim LEDs at night.
 Change patterns throughout the day.
 
-Pressed nob for brightness
+Pressed nob for brightness.
+Better way to load glyph values.
