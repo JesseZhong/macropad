@@ -74,6 +74,7 @@ class MacroPadManager:
         # Toggle LEDs. DO NOT localize switch, as state changes aren't tracked.
         # TODO: Move all this to LED module.
         self.macropad.encoder_switch_debounced.update()
+        encoder_down = not self.macropad.encoder_switch_debounced.value
 
         # Dequeue all current key events.
         while True:
@@ -85,7 +86,6 @@ class MacroPadManager:
 
             # Check for for a key code.
             key_number = event.key_number
-            encoder_down = not self.macropad.encoder_switch_debounced.value
             if key_number != None:
 
                 if event.pressed and (
@@ -113,12 +113,12 @@ class MacroPadManager:
             if (self.rotary_previous - rotary_current) > 0:
                 self.macros.execute(
                     '-',
-                    self.macropad.encoder_switch_debounced.pressed
+                    encoder_down
                 )
             else:
                 self.macros.execute(
                     '+',
-                    self.macropad.encoder_switch_debounced.pressed
+                    encoder_down
                 )
 
         # Save current position for next cycle.

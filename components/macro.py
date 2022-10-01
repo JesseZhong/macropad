@@ -100,26 +100,42 @@ class Macro:
                 """
                     Allows for: true, false, 'toggle'
                 """
+                def config_lock(lock_value):
+                    def set_lock():
+                        controller.locked = lock_value
+                    return set_lock
+
+                def toggle_lock():
+                    controller.locked = not controller.locked
+
                 lock = state['lock']
 
-                if lock == 'toggle':
-                    def toggle_lock():
-                        controller.locked = not controller.locked
+                if isinstance(lock, str):
 
-                    controller.add_lock_key(macro_key)
+                    lock_value = lock.lower()
+                    lock_on = config_lock(True)
+                    lock_off = config_lock(False)
 
-                    tasks.append(toggle_lock)
+                    lock_handler = {
+                        'lock': lock_on,
+                        'on': lock_on,
+                        'true': lock_on,
+                        'unlock': lock_off,
+                        'off': lock_off,
+                        'false': lock_off,
+                        'toggle': toggle_lock,
+                        'switch': toggle_lock
+                    }
+
+                    if lock_value in lock_handler:
+                        controller.add_lock_key(macro_key)
+                        tasks.append(lock_handler[lock_value])
 
                 else:
                     try:
-                        lock_value = bool(lock)
-
-                        def set_lock():
-                            controller.locked = lock_value
+                        tasks.append(config_lock(bool(lock)))
 
                         controller.add_lock_key(macro_key)
-
-                        tasks.append(set_lock)
                     except ValueError:
                         pass
 

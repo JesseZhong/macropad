@@ -135,15 +135,22 @@
     "modified_macros": {
         "0": {
             "state": {
+                "led": "toggle",
                 "lock": "toggle"
             },
-            "message": "f{lock}"
-        },
-        "1": {
-            "state": {
-                "led": "toggle"
-            },
             "message": "f{sun}"
+        },
+        "+": {
+            "state": {
+                "lock": "unlock"
+            },
+            "message": "f{unlock}"
+        },
+        "-": {
+            "state": {
+                "lock": "lock"
+            },
+            "message": "f{lock}"
         }
     }
 }

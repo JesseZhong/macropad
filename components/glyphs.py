@@ -784,7 +784,7 @@ class Glyphs:
     # universal_access = "\uf29a"
     # university = "\uf19c"
     # unlock_alt = "\uf13e"
-    # unlock = "\uf09c"
+    unlock = "\uf09c"
     # unsplash = "\uf325"
     # upload = "\uf093"
     # usb = "\uf287"
