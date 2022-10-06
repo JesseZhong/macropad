@@ -113,7 +113,7 @@
                 "CONTROL",
                 "ALT"
             ],
-            "message": "f{volume_off}"
+            "message": "f{volume off}"
         },
 
         "11": {
@@ -123,12 +123,12 @@
 
         "+": {
             "key": "VOLUME_INCREMENT",
-            "message": "f{volume_up}"
+            "message": "f{volume up}"
         },
 
         "-": {
             "key": "VOLUME_DECREMENT",
-            "message": "f{volume_down}"
+            "message": "f{volume down}"
         }
     },
 

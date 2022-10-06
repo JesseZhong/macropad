@@ -42,7 +42,7 @@ class Display:
         self
     ):
         self.text_display = self.macropad.display_text(
-            title=self.glyphs.normalize(self.title),
+            title=self.glyphs.cache(self.title),
             title_scale=self.title_scale,
             font=self.glyphs.font
         )
@@ -55,7 +55,7 @@ class Display:
         self,
         message: str
     ):
-        self.text_display[0].text = self.glyphs.normalize(message)
+        self.text_display[0].text = self.glyphs.cache(message)
         self.written = True
         self.timeout = MESSAGE_TIMEOUT
         self.text_display.show()
