@@ -30,6 +30,7 @@ class Bakery:
         if result:
             with open(outpath, 'w') as f:
                 self.write_minified(f, result)
+                print(f'Baked {self.input}. Output: {outpath}')
 
 
     def bake_glyphs(

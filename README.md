@@ -13,7 +13,7 @@ After that, you should see `CIRCUITPY` in your list of drives/devices. Make sure
 ## installation
 Make sure your macropad is plugged in and then execute the following command to install.
 
-`./install`
+`./macro install`
 
 If there are no errors, you can continue configuring and using your macropad.
 
